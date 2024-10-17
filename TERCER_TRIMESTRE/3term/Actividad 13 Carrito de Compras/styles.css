@@ -1,0 +1,56 @@
+.titulo {
+    background-color: #ddd;
+    border-radius: 10px;
+    text-align: center;
+    display: inline-block;
+    font-size: 40px;
+    padding: 5px 10px; 
+    margin-left: 450px;
+}
+
+#subCarrito{
+    background-color: #ddd;
+    border-radius: 10px;
+    text-align: center;
+    display: inline-block;
+    font-size: 28px;
+    padding: 10px 15px; 
+    margin-left: 40px;
+}
+
+#carrito{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 18px;
+}
+
+.text-total{
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-size: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+th {
+    background-color: #f2f2f2;
+}
+
+.añadir-al-carrito {
+    padding: 5px 10px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.añadir-al-carrito:hover {
+    background-color: #218838;
+}

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito de Compras</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1 class="titulo">Carrito de Compras || Desayuno 👌</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Precio</th>
+            </tr>
+        </thead>
+        <tbody id="productos"></tbody>
+    </table>
+
+    <h2 id="subCarrito">Carrito</h2>
+    <ul id="carrito"></ul>
+    <p class="text-total">Total: <span id="total">0</span> COP</p>
+    <button id="vaciar-carrito">Vaciar Carrito</button>
+
+    <script>
+        const productosJSON = [
+            {"id": 1, "nombre": "Chocolate", "precio": 2500},
+            {"id": 2, "nombre": "Pan", "precio": 500},
+            {"id": 3, "nombre": "Queso", "precio": 2500},
+            {"id": 4, "nombre": "Caldo de Costilla", "precio": 7000},
+            {"id": 5, "nombre": "Tamal", "precio": 6500},
+            {"id": 6, "nombre": "Café", "precio": 2000},
+            {"id": 7, "nombre": "Changua", "precio": 6000},
+            {"id": 8, "nombre": "Jugos Naturales", "precio": 4000}
+        ];
+
+        const obtenerCarrito = () => JSON.parse(localStorage.getItem('carrito')) || [];
+        const guardarCarrito = (carrito) => localStorage.setItem('carrito', JSON.stringify(carrito));
+
+        const renderizarProductos = (productos) => {
+            const productosTbody = document.getElementById('productos');
+            productosTbody.innerHTML = '';
+            productos.forEach(producto => {
+                const fila = document.createElement('tr');
+                fila.innerHTML = `
+                    <td>${producto.nombre}</td>
+                    <td>${producto.precio} COP</td>
+                    <td><button class="añadir-al-carrito" onclick="agregarAlCarrito(${producto.id})">Añadir al Carrito</button></td>
+                `;
+                productosTbody.appendChild(fila);
+            });
+        };
+
+        const renderizarCarrito = (carrito) => {
+            const carritoUl = document.getElementById('carrito');
+            carritoUl.innerHTML = '';
+            carrito.forEach(producto => {
+                const item = document.createElement('li');
+                item.textContent = `${producto.nombre} - ${producto.precio} COP    `;
+                const eliminarBtn = document.createElement('button');
+                eliminarBtn.textContent = "X";
+                eliminarBtn.onclick = () => eliminarDelCarrito(producto.id);
+                item.appendChild(eliminarBtn);
+                carritoUl.appendChild(item);
+            });
+        };
+
+        const agregarAlCarrito = (id) => {
+            const carrito = obtenerCarrito();
+            const producto = productosJSON.find(p => p.id === id);
+            if (carrito.some(p => p.id === id)) return; 
+            carrito.push(producto);
+            guardarCarrito(carrito);
+            renderizarCarrito(carrito);
+            calcularTotal(carrito);
+        };
+
+        const eliminarDelCarrito = (id) => {
+            let carrito = obtenerCarrito();
+            carrito = carrito.filter(producto => producto.id !== id);
+            guardarCarrito(carrito);
+            renderizarCarrito(carrito);
+            calcularTotal(carrito);
+        };
+
+        const vaciarCarrito = () => {
+            localStorage.removeItem('carrito');
+            renderizarCarrito([]);
+            calcularTotal([]);
+        };
+
+        const calcularTotal = (carrito) => {
+            const total = carrito.reduce((acc, producto) => acc + producto.precio, 0);
+            document.getElementById('total').textContent = total;
+        };
+
+        document.getElementById('vaciar-carrito').addEventListener('click', vaciarCarrito);
+
+        const carrito = obtenerCarrito();
+        renderizarProductos(productosJSON);
+        renderizarCarrito(carrito);
+        calcularTotal(carrito);
+    </script>
+</body>
+</html>
